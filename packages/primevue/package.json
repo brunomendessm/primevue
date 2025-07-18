@@ -337,7 +337,7 @@
         "access": "public"
     },
     "scripts": {
-        "build": "NODE_ENV=production INPUT_DIR=src/ OUTPUT_DIR=dist/ pnpm run build:package",
+        "build": "cross-env NODE_ENV=production INPUT_DIR=src/ OUTPUT_DIR=dist/ pnpm run build:package",
         "build:package": "pnpm run build:prebuild && pnpm run build:api && rollup -c && pnpm run build:postbuild",
         "build:api": "node ./scripts/build-api.js",
         "build:prebuild": "node ./scripts/prebuild.mjs",
@@ -349,12 +349,13 @@
     },
     "devDependencies": {
         "@vue/test-utils": "^2.0.0",
+        "cross-env": "^7.0.3",
         "vitest": "^0.29.8"
     },
     "dependencies": {
         "@primeuix/styled": "catalog:",
-        "@primeuix/utils": "catalog:",
         "@primeuix/styles": "catalog:",
+        "@primeuix/utils": "catalog:",
         "@primevue/core": "workspace:*",
         "@primevue/icons": "workspace:*"
     },
