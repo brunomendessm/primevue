@@ -1,11 +1,11 @@
 {
-    "name": "@primevue/monorepo",
+    "name": "@brunomendessm/primevue-fork",
     "version": "4.3.5",
-    "author": "PrimeTek Informatics",
+    "author": "Bruno Mendes",
     "homepage": "https://primevue.org/",
     "repository": {
         "type": "git",
-        "url": "https://github.com/primefaces/primevue.git"
+        "url": "https://github.com/brunomendessm/primevue/tree/gerencia"
     },
     "license": "MIT",
     "bugs": {
