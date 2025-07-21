@@ -224,7 +224,7 @@ export default {
     name: 'AutoComplete',
     extends: BaseAutoComplete,
     inheritAttrs: false,
-    emits: ['change', 'focus', 'blur', 'item-select', 'item-unselect', 'option-select', 'option-unselect', 'dropdown-click', 'clear', 'complete', 'before-show', 'before-hide', 'show', 'hide'],
+    emits: ['change', 'focus', 'blur', 'item-select', 'item-unselect', 'option-select', 'option-unselect', 'empty-selection', 'dropdown-click', 'clear', 'complete', 'before-show', 'before-hide', 'show', 'hide'],
     inject: {
         $pcFluid: { default: null }
     },
@@ -713,6 +713,12 @@ export default {
             event.preventDefault();
         },
         onEnterKey(event) {
+            const query = (event.target.value || '').trim();
+            if (query && this.visibleOptions.length === 0) {
+                this.$emit('empty-selection', { originalEvent: event, query });
+                event.preventDefault();
+                return;
+            }
             if (!this.typeahead) {
                 if (this.multiple) {
                     if (event.target.value.trim()) {

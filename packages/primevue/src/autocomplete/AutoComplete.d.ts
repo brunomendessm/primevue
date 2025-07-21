@@ -98,6 +98,21 @@ export interface AutoCompleteOptionSelectEvent {
 }
 
 /**
+ * Empty item select event.
+ * @see {@link AutoCompleteEmitsOptions['empty-selection']}
+ */
+export interface AutoCompleteEmptySelectionEvent {
+    /**
+     * Browser event
+     */
+    originalEvent: Event;
+    /**
+     * Selected item
+     */
+    value: any;
+}
+
+/**
  * Custom item unselect event.
  * @see {@link AutoCompleteEmitsOptions['item-unselect']}
  * @extends AutoCompleteOptionSelectEvent
@@ -842,6 +857,11 @@ export interface AutoCompleteEmitsOptions {
      * @param {AutoCompleteOptionUnselectEvent} event - Custom option unselect event.
      */
     'option-unselect'(event: AutoCompleteOptionUnselectEvent): void;
+    /**
+     * Callback to invoke when a suggestion is selected.
+     * @param {AutoCompleteEmptySelectionEvent} event - Custom option select event.
+     */
+    'empty-selection'(event: AutoCompleteEmptySelectionEvent): void;
     /**
      * Callback to invoke to when dropdown button is clicked.
      * @param {AutoCompleteDropdownClickEvent} event - Custom dropdown click event.
