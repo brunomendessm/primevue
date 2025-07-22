@@ -1072,6 +1072,18 @@ export default {
                 this.updateModel(null, newValueArray);
             }
         },
+        updateMultipleById(value) {
+            if (this.multiple && this.d_value && value) {
+                const index = this.d_value.findIndex((item) => {
+                    return item.id === value.id;
+                });
+                if (index !== -1) {
+                    const newValueArray = [...this.d_value];
+                    newValueArray[index] = value;
+                    this.updateModel(null, newValueArray);
+                }
+            }
+        },
         clearInput() {
             this.hide();
             if (this.multiple) {
