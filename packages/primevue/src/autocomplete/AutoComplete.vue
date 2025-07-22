@@ -714,10 +714,27 @@ export default {
         },
         onEnterKey(event) {
             const query = (event.target.value || '').trim();
-            if (query && this.visibleOptions.length === 0) {
-                this.$emit('empty-selection', { originalEvent: event, query });
+            const isMatch = this.visibleOptions.some((option) => {
+                const label = this.getOptionLabel(option);
+                return label && label.toLocaleLowerCase(this.searchLocale) === query.toLocaleLowerCase(this.searchLocale);
+            });
+            if (query && !isMatch) {
+                this.$emit('empty-selection', { originalEvent: event, value: query });
                 event.preventDefault();
                 return;
+            }
+            if (this.multiple && query) {
+                const matchedOption = this.visibleOptions.find((option) => {
+                    const label = this.getOptionLabel(option);
+                    return label && label.toLocaleLowerCase(this.searchLocale) === query.toLocaleLowerCase(this.searchLocale);
+                });
+                if (matchedOption) {
+                    this.onOptionSelect(event, matchedOption, false);
+                } else {
+                    this.$emit('empty-selection', { originalEvent: event, value: query });
+                }
+                this.$refs.focusInput.value = '';
+                event.preventDefault();
             }
             if (!this.typeahead) {
                 if (this.multiple) {
@@ -1039,6 +1056,38 @@ export default {
             }
 
             return matchedOptionIndex > -1 ? matchedOptionIndex : index;
+        },
+        // Gerencia Methods
+        removeMultipleValue(value) {
+            if (this.multiple && this.d_value) {
+                const newValueArray = (this.d_value || []).filter((item) => !this.isEquals(item, value));
+                this.updateModel(null, newValueArray);
+                this.dirty = true;
+                focus(this.$refs.focusInput);
+            }
+        },
+        addMultipleValue(value) {
+            if (this.multiple) {
+                const newValueArray = [...(this.d_value || []), value];
+                this.updateModel(null, newValueArray);
+            }
+        },
+        clearInput() {
+            this.hide();
+            if (this.multiple) {
+                // Clear the input element's value
+                if (this.$refs.focusInput) {
+                    this.$refs.focusInput.value = '';
+                }
+            } else {
+                // For single, just update model
+                this.updateModel(null, value);
+
+                const inputEl = this.$refs.focusInput?.$el;
+                if (inputEl) {
+                    inputEl.value = '';
+                }
+            }
         }
     },
     computed: {
