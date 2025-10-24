@@ -193,6 +193,10 @@ export interface AutoCompletePassThroughOptions {
      */
     loader?: AutoCompletePassThroughOptionType;
     /**
+     * Used to pass attributes to the label's DOM element.
+     */
+    clearIcon?: AutoCompletePassThroughOptionType;
+    /**
      * Used to pass attributes to the dropdown's DOM element.
      */
     dropdown?: AutoCompletePassThroughOptionType;
@@ -385,6 +389,11 @@ export interface AutoCompleteProps {
      * @defaultValue false
      */
     multiple?: boolean | undefined;
+    /**
+     * When enabled, a clear icon is displayed to clear the value.
+     * @defaultValue false
+     */
+    showClear?: boolean | undefined;
     /**
      * Default text to display when no option is selected.
      */
@@ -803,6 +812,17 @@ export interface AutoCompleteSlots {
          * @param {Event} event - Browser event
          */
         toggleCallback: (event: Event) => void;
+    }): VNode[];
+    /**
+     * Custom clear icon template.
+     * @param {Object} scope - clear icon slot's params.
+     */
+    clearicon(scope: {
+        /**
+         * Clear icon click function.
+         * @param {Event} event - Browser event
+         */
+        clearCallback: (event: Event) => void;
     }): VNode[];
 }
 

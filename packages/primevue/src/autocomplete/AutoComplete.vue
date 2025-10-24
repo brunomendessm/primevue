@@ -34,6 +34,9 @@
             :data-p-has-dropdown="dropdown"
             :pt="ptm('pcInputText')"
         />
+        <slot v-if="isClearIconVisible" name="clearicon" :class="cx('clearIcon')" :clearCallback="onClearClick">
+            <TimesIcon :class="[cx('clearIcon')]" @click="onClearClick" v-bind="ptm('clearIcon')" />
+        </slot>
         <ul
             v-if="multiple"
             ref="multiContainer"
@@ -212,6 +215,7 @@ import { ZIndex } from '@primeuix/utils/zindex';
 import { ConnectedOverlayScrollHandler } from '@primevue/core/utils';
 import ChevronDownIcon from '@primevue/icons/chevrondown';
 import SpinnerIcon from '@primevue/icons/spinner';
+import TimesIcon from '@primevue/icons/times';
 import Chip from 'primevue/chip';
 import InputText from 'primevue/inputtext';
 import OverlayEventBus from 'primevue/overlayeventbus';
@@ -599,6 +603,9 @@ export default {
 
                 this.updateModel(event, value);
             }
+        },
+        onClearClick(event) {
+            this.updateModel(event, null);
         },
         onOverlayClick(event) {
             OverlayEventBus.emit('overlay-click', {
@@ -1154,6 +1161,9 @@ export default {
         focusedMultipleOptionId() {
             return this.focusedMultipleOptionIndex !== -1 ? `${this.$id}_multiple_option_${this.focusedMultipleOptionIndex}` : null;
         },
+        isClearIconVisible() {
+            return this.showClear && this.$filled && !this.disabled && !this.loading;
+        },
         ariaSetSize() {
             return this.visibleOptions.filter((option) => !this.isOptionGroup(option)).length;
         },
@@ -1189,9 +1199,10 @@ export default {
         InputText,
         VirtualScroller,
         Portal,
+        Chip,
         ChevronDownIcon,
         SpinnerIcon,
-        Chip
+        TimesIcon
     },
     directives: {
         ripple: Ripple
