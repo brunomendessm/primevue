@@ -35,6 +35,9 @@
             :data-p-has-e-icon="showIcon && iconDisplay === 'input' && !inline"
             :pt="ptm('pcInputText')"
         />
+        <slot v-if="isClearIconVisible" name="clearicon" :class="cx('clearIcon')" :clearCallback="onClearClick">
+            <TimesIcon :class="[cx('clearIcon')]" @click="onClearClick" v-bind="ptm('clearIcon')" />
+        </slot>
         <slot v-if="showIcon && iconDisplay === 'button' && !inline" name="dropdownbutton" :toggleCallback="onButtonClick">
             <button
                 :class="cx('dropdown')"
@@ -570,6 +573,7 @@ import ChevronDownIcon from '@primevue/icons/chevrondown';
 import ChevronLeftIcon from '@primevue/icons/chevronleft';
 import ChevronRightIcon from '@primevue/icons/chevronright';
 import ChevronUpIcon from '@primevue/icons/chevronup';
+import TimesIcon from '@primevue/icons/times';
 import Button from 'primevue/button';
 import InputText from 'primevue/inputtext';
 import OverlayEventBus from 'primevue/overlayeventbus';
@@ -724,7 +728,7 @@ export default {
 
             if (this.d_value) {
                 if (this.isSingleSelection()) {
-                    return this.isDateEquals(this.d_value, dateMeta);
+                    modelVal = this.d_value?.getTime() !== date.getTime() ? date : null;
                 } else if (this.isMultipleSelection()) {
                     let selected = false;
 
@@ -1492,7 +1496,7 @@ export default {
             event.preventDefault();
         },
         onClearButtonClick(event) {
-            this.updateModel(this.$formDefaultValue || null);
+            this.updateModel(null);
             this.overlayVisible = false;
             this.$emit('clear-click', event);
             event.preventDefault();
@@ -2756,6 +2760,10 @@ export default {
         getYear(month) {
             return this.currentView === 'month' ? this.currentYear : month.year;
         },
+        onClearClick() {
+            this.updateModel(null);
+            this.overlayVisible = false;
+        },
         onOverlayClick(event) {
             event.stopPropagation();
 
@@ -3057,6 +3065,9 @@ export default {
         switchViewButtonDisabled() {
             return this.numberOfMonths > 1 || this.disabled;
         },
+        isClearIconVisible() {
+            return this.showClear && this.d_value != null && !this.disabled;
+        },
         panelId() {
             return this.$id + '_panel';
         },
@@ -3144,7 +3155,8 @@ export default {
         ChevronLeftIcon,
         ChevronRightIcon,
         ChevronUpIcon,
-        ChevronDownIcon
+        ChevronDownIcon,
+        TimesIcon
     },
     directives: {
         ripple: Ripple
