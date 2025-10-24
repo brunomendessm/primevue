@@ -117,7 +117,7 @@
                 v-if="dropdown"
                 ref="dropdownButton"
                 type="button"
-                :class="[cx('dropdown'), dropdownClass]"
+                :class="[cx('dropdown'), dropdownClass, { 'bg-surface-200!': disabled }]"
                 :disabled="disabled"
                 aria-haspopup="listbox"
                 :aria-expanded="overlayVisible"
